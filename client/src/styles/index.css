@@ -1,0 +1,469 @@
+/* ---------------------------------------------------------------------
+   Design tokens — from the PRD's Figma "Design System" page.
+--------------------------------------------------------------------- */
+:root {
+  --color-purple: #ad1fea; /* primary actions: Add Feedback, Submit Feedback */
+  --color-blue: #4661e6; /* active pill / secondary accent */
+  --color-navy: #373f68; /* top bar background, Cancel button */
+  --color-navy-dark: #3a4374; /* headings, Go Back text */
+  --color-slate: #647196; /* muted/secondary text, helper text, navy-button hover */
+  --color-coral: #f49f85; /* gradient accent */
+  --color-sky: #62bcfa; /* gradient accent */
+  --color-pill-bg: #f2f4ff; /* inactive pill background */
+  --color-page-bg: #f7f8fd; /* page background */
+  --color-white: #ffffff;
+  --color-error: #d73737;
+
+  --radius-card: 14px;
+  --radius-pill: 999px;
+
+  --font-family: 'Jost', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  background: var(--color-page-bg);
+  color: var(--color-navy-dark);
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* ---------------------------------------------------------------------
+   Page shell / responsive grid
+
+   Three named grid areas are placed differently per breakpoint to match
+   the Figma desktop / tablet / mobile frames:
+     - header  = "My Company" gradient card
+     - pills   = category filter card
+     - topbar  = dark navy count + Add Feedback bar
+     - content = suggestion list / empty state card
+--------------------------------------------------------------------- */
+.page-shell {
+  min-height: 100vh;
+  padding: 24px 16px;
+}
+
+.page-grid {
+  display: grid;
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  /* Mobile default (<600px): everything stacked, full width, in the
+     order header -> topbar -> pills -> content. */
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    'header'
+    'topbar'
+    'pills'
+    'content';
+}
+
+.page-grid__header {
+  grid-area: header;
+}
+.page-grid__pills {
+  grid-area: pills;
+}
+.page-grid__topbar {
+  grid-area: topbar;
+}
+.page-grid__content {
+  grid-area: content;
+  min-height: 0;
+}
+
+/* Tablet (600px–1023px): header + pills share a row, topbar and content
+   each span full width below. */
+@media (min-width: 600px) {
+  .page-grid {
+    grid-template-columns: minmax(180px, 260px) 1fr;
+    grid-template-areas:
+      'header pills'
+      'topbar topbar'
+      'content content';
+  }
+}
+
+/* Desktop (>=1024px): classic two-column layout — fixed-width sidebar
+   (header stacked above pills) beside a flexible main column (topbar
+   stacked above content, content fills remaining height). */
+@media (min-width: 1024px) {
+  .page-grid {
+    grid-template-columns: 320px 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      'header topbar'
+      'pills  content';
+    min-height: calc(100vh - 48px);
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Header card
+--------------------------------------------------------------------- */
+.header-card {
+  background: linear-gradient(135deg, var(--color-blue), var(--color-purple), var(--color-coral));
+  border-radius: var(--radius-card);
+  padding: 28px 24px;
+  color: var(--color-white);
+  min-height: 130px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.header-card__title {
+  margin: 0 0 4px;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.header-card__subtitle {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ---------------------------------------------------------------------
+   Category filter card / pills
+--------------------------------------------------------------------- */
+.filter-card {
+  background: var(--color-white);
+  border-radius: var(--radius-card);
+  padding: 20px;
+  height: 100%;
+}
+
+.filter-card__pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+}
+
+.pill {
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--color-pill-bg);
+  color: var(--color-blue);
+  font-weight: 600;
+  font-size: 13px;
+  padding: 8px 16px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: filter 0.15s ease;
+}
+
+.pill:hover {
+  filter: brightness(0.97);
+}
+
+.pill--active {
+  background: var(--color-blue);
+  color: var(--color-white);
+}
+
+/* ---------------------------------------------------------------------
+   Top bar
+--------------------------------------------------------------------- */
+.top-bar {
+  background: var(--color-navy);
+  border-radius: var(--radius-card);
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.top-bar__count {
+  color: var(--color-white);
+  font-weight: 700;
+  font-size: 16px;
+}
+
+/* ---------------------------------------------------------------------
+   Buttons (shared)
+--------------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  font-size: 14px;
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: filter 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn:hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+
+.btn--purple {
+  background: var(--color-purple);
+  color: var(--color-white);
+}
+
+.btn--navy {
+  background: var(--color-navy);
+  color: var(--color-white);
+}
+
+.btn--navy:hover:not(:disabled) {
+  filter: none;
+  background: var(--color-slate);
+}
+
+.btn__icon {
+  font-size: 15px;
+  line-height: 1;
+}
+
+.back-link {
+  background: none;
+  border: none;
+  color: var(--color-navy-dark);
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 8px 0;
+  margin-bottom: 12px;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+/* ---------------------------------------------------------------------
+   Content card / suggestion list / empty state
+--------------------------------------------------------------------- */
+.content-card {
+  background: var(--color-white);
+  border-radius: var(--radius-card);
+  padding: 24px;
+  min-height: 400px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-card__status {
+  margin: auto;
+  color: var(--color-slate);
+  font-size: 15px;
+}
+
+.content-card__status--error {
+  color: var(--color-error);
+}
+
+.suggestion-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.suggestion-card {
+  border-bottom: 1px solid var(--color-pill-bg);
+  padding-bottom: 16px;
+}
+
+.suggestion-card:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.suggestion-card__title {
+  margin: 0 0 6px;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--color-navy-dark);
+}
+
+.suggestion-card__description {
+  margin: 0 0 10px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-slate);
+}
+
+.tag {
+  display: inline-block;
+  background: var(--color-pill-bg);
+  color: var(--color-blue);
+  font-weight: 600;
+  font-size: 12px;
+  border-radius: var(--radius-pill);
+  padding: 4px 14px;
+}
+
+.empty-state {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  padding: 24px;
+}
+
+.empty-state__heading {
+  margin: 12px 0 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-navy-dark);
+}
+
+.empty-state__subtext {
+  margin: 0 0 12px;
+  font-size: 14px;
+  color: var(--color-slate);
+  max-width: 320px;
+}
+
+/* ---------------------------------------------------------------------
+   AddFeedback page / form
+--------------------------------------------------------------------- */
+.add-feedback-page {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.feedback-form-card {
+  background: var(--color-white);
+  border-radius: var(--radius-card);
+  padding: 32px 28px;
+}
+
+.feedback-form-card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--color-purple);
+  color: var(--color-white);
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.feedback-form-card__heading {
+  margin: 0 0 24px;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-navy-dark);
+}
+
+.form-field {
+  margin-bottom: 20px;
+}
+
+.form-field label {
+  display: block;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--color-navy-dark);
+  margin-bottom: 4px;
+}
+
+.form-field__helper {
+  margin: 0 0 8px;
+  font-size: 13px;
+  color: var(--color-slate);
+}
+
+.input {
+  width: 100%;
+  border: 1px solid var(--color-pill-bg);
+  background: var(--color-pill-bg);
+  border-radius: 6px;
+  padding: 10px 12px;
+  color: var(--color-navy-dark);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-purple);
+  background: var(--color-white);
+}
+
+textarea.input {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.input--error {
+  border-color: var(--color-error);
+  background: var(--color-white);
+}
+
+.form-field__error {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: var(--color-error);
+}
+
+.form-field__error--general {
+  margin-bottom: 16px;
+}
+
+.feedback-form-card__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 480px) {
+  .feedback-form-card__actions {
+    flex-direction: column-reverse;
+  }
+
+  .feedback-form-card__actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

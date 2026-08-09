@@ -1,10 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
+import App from './App.jsx'
+import './styles/index.css'
 
-// Placeholder entry point — Home/AddFeedback components and routing
-// are not implemented yet. This just proves the Vite/React scaffold runs.
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <div>Product Feedback App — scaffold placeholder</div>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </React.StrictMode>
 )

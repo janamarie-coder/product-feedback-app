@@ -61,16 +61,44 @@ Empty state content (centered, stacked vertically):
 
 ### 2.2 AddFeedback Page (`/add-feedback`)
 
+**Page header:**
+- "Go Back" link (top-left, navigates to Home without submitting)
+- Round purple "+" icon
+- Heading: "Create New Feedback"
+
 **Form fields** (in order):
 
-| Field | Input type | Required | Notes |
-|---|---|---|---|
-| Title | text input | Yes | Short summary of the suggestion |
-| Category | select dropdown | Yes | Options: `UI`, `UX`, `Enhancement`, `Bug`, `Feature` — no "All" option here, no pre-selected default (forces an explicit choice) |
-| Description | textarea | Yes | Longer explanation of the suggestion |
+| Field | Input type | Required | Label | Helper text |
+|---|---|---|---|---|
+| Title | text input | Yes | "Feedback Title" | "Add a short, descriptive headline" |
+| Category | select dropdown | Yes | "Category" | "Choose a category for your feedback" |
+| Description | textarea | Yes | "Feedback Detail" | "Include any specific comments on what should be improved, added, etc." |
 
-**Buttons:**
-- **Add Feedback** (primary, purple) — validates and submits the form.
+Category dropdown options: `Feature`, `UI`, `UX`, `Enhancement`, `Bug` — no "All" option, no pre-selected default.
+
+**Buttons** (in order):
+- **Cancel** (dark navy) — navigates back to Home without submitting or saving anything.
+- **Submit Feedback** (primary, purple) — validates and submits the form.
+
+**Validation rules**
+
+Validation runs client-side on submit attempt, and is re-enforced server-side. Each rule maps to an exact error message shown inline beneath the corresponding field:
+
+| Field | Rule | Error message |
+|---|---|---|
+| Title | required (non-empty after trimming) | `"Title is required."` |
+| Title | min length 2 | `"Title must be at least 2 characters."` |
+| Title | max length 100 | `"Title must be 100 characters or fewer."` |
+| Description | required (non-empty after trimming) | `"Description is required."` |
+| Description | min length 5 | `"Description must be at least 5 characters."` |
+| Description | max length 500 | `"Description must be 500 characters or fewer."` |
+| Category | required | `"Please select a category."` |
+| Category | must be one of the 5 allowed values | `"Category must be one of: UI, UX, Enhancement, Bug, Feature."` |
+
+**Success flow**
+1. `POST /add-one-suggestion` succeeds (`201`).
+2. Frontend navigates back to the Home page.
+3. The new suggestion appears in the list if it matches the currently active filter (or always, if `All` is active). Do NOT reset the filter to All.
 
 **2.2.1 Validation rules**
 
@@ -262,16 +290,24 @@ Live reference (currently showing the empty state):
    - **Empty state**, centered both horizontally and vertically: gray line-art detective character (round head, hat, magnifying glass) → bold dark navy heading `"There is no feedback yet."` → smaller gray/muted subtext `"Try a different category or add a suggestion."` — all stacked and center-aligned.
    - This same card structure holds a list of suggestion cards instead of the illustration once suggestions exist (see [Section 2.1](#21-home-page-)).
 
-**Color palette (approximate)**
-| Role | Color |
+**Exact color palette (from Design System file):**
+| Role | Hex |
 |---|---|
-| Primary accent / active pill / heading text | indigo/dark blue (~`#3A2E77`) |
-| Secondary accent / Add Feedback button | purple/violet (~`#AD1FEA`) |
-| Top bar background | dark navy (~`#373F68`) |
-| Inactive pill background | pale lavender (~`#F2F4FF`) |
-| Page background | very light gray-lavender |
-| Card backgrounds | white |
-| Gradient card | blue → purple → coral/pink, diagonal |
+| Primary accent / Submit Feedback button | `#AD1FEA` |
+| Secondary blue accent | `#4661E6` |
+| Top bar background / Cancel button | `#373F68` |
+| Inactive pill background | `#F2F4FF` |
+| Additional accent (dark navy variant) | `#3A4374` |
+| Additional accent (muted blue-gray) | `#647196` |
+| Additional accent (coral) | `#F49F85` |
+| Additional accent (sky blue) | `#62BCFA` |
+
+**Typography:** Jost (all weights — Regular, Semibold, Bold used across headings and body text)
+
+**Responsive behavior (from Mobile & Tablet mockups):**
+- On mobile and tablet widths, the sidebar (header card + category filter card) stacks ABOVE the content card, full width — not side-by-side as on desktop.
+- Category pills wrap onto multiple rows as needed at all widths.
+- AddFeedback page on mobile/tablet: "Go Back" link top-left, round "+" icon, "Create New Feedback" heading, fields stacked full-width, Cancel and Submit Feedback buttons stacked or side-by-side near the bottom.
 
 **Spacing / structure**
 - Visible gutter/gap between sidebar and main panel (not flush).
