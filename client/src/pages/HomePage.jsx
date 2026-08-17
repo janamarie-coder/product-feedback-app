@@ -6,8 +6,10 @@ import SuggestionList from '../components/SuggestionList.jsx'
 import EmptyState from '../components/EmptyState.jsx'
 import { fetchAllSuggestions, fetchSuggestionsByCategory } from '../api.js'
 
-export default function HomePage() {
-  const [activeFilter, setActiveFilter] = useState('All')
+// activeFilter/setActiveFilter are lifted to App.jsx (not local state here)
+// so the filter survives navigating away to /add-feedback and back — see
+// App.jsx for why.
+export default function HomePage({ activeFilter, setActiveFilter }) {
   const [suggestions, setSuggestions] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [loadError, setLoadError] = useState(null)

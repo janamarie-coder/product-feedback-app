@@ -318,6 +318,8 @@ ul {
   font-size: 17px;
   font-weight: 700;
   color: var(--color-navy-dark);
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .suggestion-card__description {
@@ -325,6 +327,8 @@ ul {
   font-size: 14px;
   line-height: 1.5;
   color: var(--color-slate);
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .tag {
