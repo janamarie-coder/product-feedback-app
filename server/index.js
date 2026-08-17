@@ -7,7 +7,12 @@ const suggestionsRoutes = require('./routes/suggestionsRoutes');
 
 const app = express();
 
-app.use(cors());
+const ALLOWED_ORIGINS = [
+  'https://product-feedback-app-jana.netlify.app',
+  'http://localhost:5173',
+];
+
+app.use(cors({ origin: ALLOWED_ORIGINS }));
 app.use(express.json());
 
 app.use('/', suggestionsRoutes);
