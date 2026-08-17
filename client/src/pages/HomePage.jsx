@@ -42,28 +42,40 @@ export default function HomePage({ activeFilter, setActiveFilter }) {
   return (
     <div className="page-shell">
       <div className="page-grid">
-        <div className="page-grid__header">
-          <HeaderCard />
-        </div>
-        <div className="page-grid__pills">
-          <CategoryFilterCard activeFilter={activeFilter} onSelect={handleSelectFilter} />
-        </div>
-        <div className="page-grid__topbar">
-          <TopBar count={suggestions.length} />
-        </div>
-        <div className="page-grid__content">
-          <div className="content-card">
-            {isLoading ? (
-              <p className="content-card__status">Loading suggestions…</p>
-            ) : loadError ? (
-              <p className="content-card__status content-card__status--error">{loadError}</p>
-            ) : suggestions.length === 0 ? (
-              <EmptyState />
-            ) : (
-              <SuggestionList suggestions={suggestions} />
-            )}
+        {/* display:contents on these two wrappers (see index.css) means they
+            add landmark semantics without changing the grid layout below —
+            .page-grid__header/pills/topbar/content stay the actual grid
+            items, exactly as before. */}
+        <aside className="page-grid__sidebar" aria-label="Company and category filters">
+          <div className="page-grid__header">
+            <HeaderCard />
           </div>
-        </div>
+          <div className="page-grid__pills">
+            <CategoryFilterCard activeFilter={activeFilter} onSelect={handleSelectFilter} />
+          </div>
+        </aside>
+        <main className="page-grid__main" aria-label="Suggestions">
+          <div className="page-grid__topbar">
+            <TopBar count={suggestions.length} />
+          </div>
+          <div className="page-grid__content">
+            {/* Visually hidden — gives the page a proper h1 -> h2 -> h3
+                sequence (SuggestionCard titles are h3) without adding a
+                second visible heading next to the top bar's count. */}
+            <h2 className="visually-hidden">Suggestions</h2>
+            <div className="content-card">
+              {isLoading ? (
+                <p className="content-card__status">Loading suggestions…</p>
+              ) : loadError ? (
+                <p className="content-card__status content-card__status--error">{loadError}</p>
+              ) : suggestions.length === 0 ? (
+                <EmptyState />
+              ) : (
+                <SuggestionList suggestions={suggestions} />
+              )}
+            </div>
+          </div>
+        </main>
       </div>
     </div>
   )

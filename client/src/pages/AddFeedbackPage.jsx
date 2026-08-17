@@ -69,7 +69,9 @@ export default function AddFeedbackPage() {
           <form onSubmit={handleSubmit} noValidate>
             <div className="form-field">
               <label htmlFor="title">Feedback Title</label>
-              <p className="form-field__helper">Add a short, descriptive headline</p>
+              <p id="title-helper" className="form-field__helper">
+                Add a short, descriptive headline
+              </p>
               <input
                 id="title"
                 type="text"
@@ -77,7 +79,9 @@ export default function AddFeedbackPage() {
                 onChange={handleChange('title')}
                 className={errors.title ? 'input input--error' : 'input'}
                 aria-invalid={Boolean(errors.title)}
-                aria-describedby={errors.title ? 'title-error' : undefined}
+                aria-describedby={
+                  errors.title ? 'title-helper title-error' : 'title-helper'
+                }
               />
               {errors.title && (
                 <p id="title-error" className="form-field__error">
@@ -88,14 +92,18 @@ export default function AddFeedbackPage() {
 
             <div className="form-field">
               <label htmlFor="category">Category</label>
-              <p className="form-field__helper">Choose a category for your feedback</p>
+              <p id="category-helper" className="form-field__helper">
+                Choose a category for your feedback
+              </p>
               <select
                 id="category"
                 value={form.category}
                 onChange={handleChange('category')}
                 className={errors.category ? 'input input--error' : 'input'}
                 aria-invalid={Boolean(errors.category)}
-                aria-describedby={errors.category ? 'category-error' : undefined}
+                aria-describedby={
+                  errors.category ? 'category-helper category-error' : 'category-helper'
+                }
               >
                 <option value="" disabled>
                   Select a category
@@ -115,7 +123,7 @@ export default function AddFeedbackPage() {
 
             <div className="form-field">
               <label htmlFor="description">Feedback Detail</label>
-              <p className="form-field__helper">
+              <p id="description-helper" className="form-field__helper">
                 Include any specific comments on what should be improved, added, etc.
               </p>
               <textarea
@@ -125,7 +133,11 @@ export default function AddFeedbackPage() {
                 onChange={handleChange('description')}
                 className={errors.description ? 'input input--error' : 'input'}
                 aria-invalid={Boolean(errors.description)}
-                aria-describedby={errors.description ? 'description-error' : undefined}
+                aria-describedby={
+                  errors.description
+                    ? 'description-helper description-error'
+                    : 'description-helper'
+                }
               />
               {errors.description && (
                 <p id="description-error" className="form-field__error">

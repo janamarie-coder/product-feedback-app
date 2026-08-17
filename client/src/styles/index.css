@@ -102,6 +102,30 @@ ul {
   min-height: 0;
 }
 
+/* The <aside>/<main> landmark wrappers (added for a11y — see HomePage.jsx)
+   sit one level above the actual grid items. display:contents removes
+   their own box from layout entirely so .page-grid__header/pills/topbar/
+   content remain direct grid children and the responsive layout above is
+   completely unaffected. */
+.page-grid__sidebar,
+.page-grid__main {
+  display: contents;
+}
+
+/* Standard visually-hidden pattern: present for screen readers, removed
+   from the visual layout without affecting anything else on the page. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* Tablet (600px–1023px): header + pills share a row, topbar and content
    each span full width below. */
 @media (min-width: 600px) {
@@ -189,6 +213,11 @@ ul {
   filter: brightness(0.97);
 }
 
+.pill:focus-visible {
+  outline: 2px solid var(--color-purple);
+  outline-offset: 2px;
+}
+
 .pill--active {
   background: var(--color-blue);
   color: var(--color-white);
@@ -239,6 +268,11 @@ ul {
   filter: brightness(1.1);
 }
 
+.btn:focus-visible {
+  outline: 2px solid var(--color-purple);
+  outline-offset: 2px;
+}
+
 .btn--purple {
   background: var(--color-purple);
   color: var(--color-white);
@@ -272,6 +306,11 @@ ul {
 
 .back-link:hover {
   text-decoration: underline;
+}
+
+.back-link:focus-visible {
+  outline: 2px solid var(--color-purple);
+  outline-offset: 2px;
 }
 
 /* ---------------------------------------------------------------------
